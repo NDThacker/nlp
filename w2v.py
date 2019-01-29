@@ -21,10 +21,18 @@ for ind in range(len(words_token)):
 #training word2vec CBOW network for gutenberg corpus
 model1 = Word2Vec(words_token, min_count = 2)
 
-vocab = model1.wv.vocab
-#all the unique words
-'''for v in vocab:
-	print(v)'''
+# summarize the loaded model
+print(model1)
+# summarize vocabulary
+words = list(model1.wv.vocab)
+print(words)
+# access vector for one word
+print(model1['sentence'])
+# save model
+model1.save('model1.bin')
+# load model
+new_model = Word2Vec.load('model1.bin')
+print(new_model)
 
 vector_w = model1.wv['brave']	#word vector
 print type(vector_w)
