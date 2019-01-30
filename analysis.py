@@ -2,13 +2,14 @@ import nltk
 import re
 
 from gensim.models import Word2Vec
+from matplotlib import pyplot
 from nltk.corpus import gutenberg, stopwords
+from sklearn.decomposition import PCA
 
 
-
-#pre processing of corpus
+''' pre processing of corpus '''
 sents_token = list(gutenberg.sents())
-sents_token = sents_token[3:]
+sents_token = sents_token[3:10]
 stpwds = stopwords.words('english')
 #removing stopwords
 for ind in range(len(sents_token)):
@@ -19,23 +20,16 @@ for ind in range(len(sents_token)):
 	sents_token[ind] = [re.sub(r'[^a-zA-Z]', '', w) for w in sents_token[ind]]
 
 
-#training word2vec CBOW network for gutenberg corpus
+''' training word2vec CBOW network for gutenberg corpus '''
 model1 = Word2Vec(sents_token, min_count = 2)
 
-# summarize the loaded model
-print(model1)
-# summarize vocabulary
+X = model1[model1.wv.vocab]
+pca = PCA(n_components=2)
+result = pca.fit_transform(X)
+# create a scatter plot of the projection
+pyplot.scatter(result[:, 0], result[:, 1])
 words = list(model1.wv.vocab)
-print(words)
-# access vector for one word
-print(model1['sentence'])
-# save model
-model1.save('model1.bin')
-# load model
-new_model = Word2Vec.load('model1.bin')
-print(new_model)
+for i, word in enumerate(words):
+	pyplot.annotate(word, xy=(result[i, 0], result[i, 1]))
+pyplot.show()
 
-vector_w = model1.wv['brave']	#word vector
-print type(vector_w)
-sim_words = model1.wv.most_similar('mountain')	#similar words
-print(sim_words)
