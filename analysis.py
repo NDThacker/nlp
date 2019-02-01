@@ -19,7 +19,6 @@ for ind in range(len(sents_token)):
 for ind in range(len(sents_token)):
 	sents_token[ind] = [re.sub(r'[^a-zA-Z]', '', w) for w in sents_token[ind]]
 
-
 ''' training word2vec CBOW network for gutenberg corpus '''
 model1 = Word2Vec(sents_token, min_count = 2)
 
