@@ -9,10 +9,15 @@ from nltk.corpus import gutenberg, stopwords
 #pre processing of corpus
 sents_token = list(gutenberg.sents())
 sents_token = sents_token[3:]
-stpwds = stopwords.words('english')
+
 #removing stopwords
+stpwds = stopwords.words('english')
 for ind in range(len(sents_token)):
 	sents_token[ind] = [w.lower() for w in sents_token[ind] if not w in stpwds]
+#not removing stopwords
+''' decreases overall probability for similarity measurement '''
+''' for ind in range(len(sents_token)):
+	    sents_token[ind] = [w.lower() for w in sents_token[ind]]'''
 
 #removing anything other than alphabetial words
 for ind in range(len(sents_token)):
@@ -20,7 +25,7 @@ for ind in range(len(sents_token)):
 
 
 #training word2vec CBOW network for gutenberg corpus
-model1 = Word2Vec(sents_token, min_count = 2)
+model1 = Word2Vec(sents_token, min_count = 2, size = 300, workers = 3, sg = 0)
 
 # summarize the loaded model
 print(model1)
