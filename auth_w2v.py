@@ -35,6 +35,11 @@ print(model1)
 # summarize vocabulary
 words = list(model1.wv.vocab)
 print(words)
+voc = dict()
+
+for w in words:
+    voc[w] = model1[w].sum()
+    print(w+" "+ str(voc[w]))
 # access vector for one word
 print(model1['mother'])
 # save model
